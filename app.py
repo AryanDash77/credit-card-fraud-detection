@@ -12,8 +12,15 @@ st.write("Enter the transaction details in the sidebar to predict whether a tran
 
 st.sidebar.header("Transaction Features")
 
-amount_input = st.sidebar.text_input("Amount (€)", value = "100.0")
-time_input = st.sidebar.text_input("Time (seconds)", value = "1.0")
+if st.sidebar.button("🔄 Reset"):
+    st.session_state['amount'] = "100.0"
+    st.session_state['time'] = "1.0"
+    for i in range(1,29):
+        st.session_state[f'v{i}'] = 0.0
+    st.rerun()
+
+amount_input = st.sidebar.text_input("Amount (€)", value = "100.0", key = 'amount')
+time_input = st.sidebar.text_input("Time (seconds)", value = "1.0", key = 'time')
 
 try:
     amount = float(amount_input)
@@ -32,7 +39,7 @@ except:
 
 v_features = []
 for i in range(1,29):
-    val = st.sidebar.slider(f"V{i}", min_value = -10.0, max_value = 10.0, value = 0.0, step = 0.1)
+    val = st.sidebar.slider(f"V{i}", min_value = -10.0, max_value = 10.0, value = 0.0, step = 0.1, key = f'v{i}')
     v_features.append(val)
 
 
@@ -71,6 +78,6 @@ if st.button("Predict"):
     st.pyplot(plt.gcf())
     plt.clf()
 
-    
+
 
     
