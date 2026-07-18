@@ -53,6 +53,24 @@ if st.button("Predict"):
 
     st.metric(label="Fraud Probability", value=f"{probability*100:.2f}%")
 
+    st.subheader("Why this Prediction ?")
 
+    feature_names = [f'V{i}' for i in range(1,29)] + ['scaled_amount','scaled_time']
+
+    explainer = shap.TreeExplainer(model)
+    shap_values_single = explainer.shap_values(input_features)
+
+    explanation = shap.Explanation(
+        values = shap_values_single[0],
+        base_values = explainer.expected_value,
+        data = input_features[0],
+        feature_names = feature_names
+    )
+
+    shap.plots.waterfall(explanation, show = False)
+    st.pyplot(plt.gcf())
+    plt.clf()
+
+    
 
     
