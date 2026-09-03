@@ -1,19 +1,14 @@
 pipeline {
     agent any
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
         stage('Build') {
             steps {
-                sh 'python -m py_compile fact.py'
+                bat 'python -m py_compile fact.py'
             }
         }
         stage('Test') {
             steps {
-                sh 'python fact.py'
+                bat 'python fact.py'
             }
         }
     }
